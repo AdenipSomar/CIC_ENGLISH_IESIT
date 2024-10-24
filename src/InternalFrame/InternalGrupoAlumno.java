@@ -789,7 +789,7 @@ DefaultTableModel tmp = new DefaultTableModel(); //para reportes
     btnModificarGrupo.setEnabled(true);
     btnCancelarGrupo.setEnabled(true);
     btnEliminarGrupo.setEnabled(true);
-
+   
 }
     
     
