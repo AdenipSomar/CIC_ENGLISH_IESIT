@@ -26,6 +26,7 @@ import javax.swing.table.DefaultTableModel;
  * @author ramos
  */
 public class InternalDocente extends javax.swing.JInternalFrame {
+AsignarGrupoDocente vAsignarGrupoDocente = new AsignarGrupoDocente(this, null);
 
 Docente vDocente = new Docente();
 DocenteDao vDocenteDao = new DocenteDao();
@@ -38,9 +39,9 @@ DefaultTableModel tmp = new DefaultTableModel(); //para reportes
     
    private VistaPrincipal vistaprincipal;
    
-    AsignarGrupoDocente vAsignarGrupoDocente;
    
-    public InternalDocente(VistaPrincipal vistaprincipal) {
+   
+   public InternalDocente(VistaPrincipal vistaprincipal) {
         initComponents();
         this.vistaprincipal = vistaprincipal;
         BasicInternalFrameUI ui = (BasicInternalFrameUI) getUI();
@@ -49,20 +50,14 @@ DefaultTableModel tmp = new DefaultTableModel(); //para reportes
         remove(northPane);
         setBorder(null);  
         
-      vAsignarGrupoDocente = new AsignarGrupoDocente(this, null); 
+        vAsignarGrupoDocente.cargaComboCompletoDocente();
         limpiarTable();
         listarDocente();
         
         
     }
     
-     // Método para actualizar ComboBox en AsignarGrupoDocente
-    public void actualizarComboBox() {
-        if (vAsignarGrupoDocente != null) {
-            vAsignarGrupoDocente.cargaComboCompletoDocente(); // Método para cargar el combo con docentes
-        }
-    
-    }
+   
     
      public void listarDocente(){
     List<Docente> ListarDoc = vDocenteDao.ListarDocente();
@@ -452,7 +447,9 @@ DefaultTableModel tmp = new DefaultTableModel(); //para reportes
         
         // Insertar el docente en la base de datos
         vDocenteDao.agregarDocente(vDocente);
-        actualizarComboBox();
+        vAsignarGrupoDocente.cargaComboCompletoDocente();
+        vAsignarGrupoDocente.cargaComboCompletoGrupo();
+        
         // Limpiar y actualizar tabla
         limpiarTable();
         listarDocente();
@@ -497,7 +494,8 @@ DefaultTableModel tmp = new DefaultTableModel(); //para reportes
 
          
         vDocenteDao.modificarLDocente(vDocente);
-        actualizarComboBox();
+        vAsignarGrupoDocente.cargaComboCompletoDocente();
+        vAsignarGrupoDocente.cargaComboCompletoGrupo();
         limpiarDocente();
         limpiarTable();
         listarDocente();
@@ -514,6 +512,7 @@ DefaultTableModel tmp = new DefaultTableModel(); //para reportes
 
     private void btnCancelarDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarDocenteActionPerformed
         limpiarDocente();
+         vAsignarGrupoDocente.cargaComboCompletoGrupo();
     }//GEN-LAST:event_btnCancelarDocenteActionPerformed
 
     private void btnEliminarDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarDocenteActionPerformed
@@ -530,7 +529,8 @@ DefaultTableModel tmp = new DefaultTableModel(); //para reportes
                 limpiarDocente();
                 limpiarTable();
                 listarDocente();
-                 actualizarComboBox();
+                        vAsignarGrupoDocente.cargaComboCompletoDocente();
+                         vAsignarGrupoDocente.cargaComboCompletoGrupo();
 
                 
             } else {
@@ -545,7 +545,7 @@ DefaultTableModel tmp = new DefaultTableModel(); //para reportes
 
     private void asignarGrupoDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asignarGrupoDocenteActionPerformed
         
-        vAsignarGrupoDocente.setVisible(true);
+     vAsignarGrupoDocente.setVisible(true);
     }//GEN-LAST:event_asignarGrupoDocenteActionPerformed
 
     private void txtRfcDocenteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRfcDocenteKeyReleased

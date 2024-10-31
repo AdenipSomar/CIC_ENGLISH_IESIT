@@ -23,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
 
 
 public class InternalGrupoAlumno extends javax.swing.JInternalFrame {
-
+AsignarGrupoDocente vAsignarGrupoDocente = new AsignarGrupoDocente(null, this);
 
 Grupo vGrupo = new Grupo();
 GrupoDao vGrupoDao = new GrupoDao();
@@ -36,30 +36,28 @@ DefaultTableModel modelo = new DefaultTableModel(); //para las tablas
 DefaultTableModel tmp = new DefaultTableModel(); //para reportes
 
  
-     AsignarGrupoDocente vAsignarGrupoDocente;
      
+
     public InternalGrupoAlumno(VistaPrincipal vistaprincipal) {
+        initComponents();
         this.vistaprincipal =  vistaprincipal;     
         BasicInternalFrameUI ui = (BasicInternalFrameUI) getUI();
         Container northPane = ui.getNorthPane();
         northPane.removeMouseMotionListener(ui.getNorthPane().getMouseMotionListeners()[0]);
         remove(northPane);
         setBorder(null);  
+       
+        vAsignarGrupoDocente.cargaComboCompletoGrupo();
         
-        initComponents();
-        
+         
         limpiarTable();
         listarGrupo();
-         vAsignarGrupoDocente = new AsignarGrupoDocente(null, this);
+        
         
     }
     
-    // Método para actualizar ComboBox en AsignarGrupoDocente
-    public void actualizarComboBox() {
-        if (vAsignarGrupoDocente != null) {
-            vAsignarGrupoDocente.cargaComboCompletoGrupo(); // Método para cargar el combo con grupos
-        }
-    }
+ 
+   
 
     public void listarGrupo(){
     List<Grupo> ListarGrp = vGrupoDao.ListarGrupo();
@@ -487,7 +485,10 @@ DefaultTableModel tmp = new DefaultTableModel(); //para reportes
 
         // Insertar el docente en la base de datos
         vGrupoDao.agregarGrupo(vGrupo);
-        actualizarComboBox();
+        vAsignarGrupoDocente.cargaComboCompletoGrupo();
+       
+        
+        
         // Limpiar y actualizar tabla
          limpiarTable();
          listarGrupo();
@@ -519,7 +520,7 @@ DefaultTableModel tmp = new DefaultTableModel(); //para reportes
                 limpiarTable();
                 listarGrupo();
                 //this.repaint();
-                 actualizarComboBox();
+                 vAsignarGrupoDocente.cargaComboCompletoGrupo();
                
                 
             } else {
@@ -565,7 +566,7 @@ DefaultTableModel tmp = new DefaultTableModel(); //para reportes
         vGrupo.setMaxEstudiantes(Integer.parseInt(txtMaxGrupo.getText()));
         
         vGrupoDao.modificarGrupo(vGrupo);
-        actualizarComboBox();
+         vAsignarGrupoDocente.cargaComboCompletoGrupo();
         limpiarGrupo();
         limpiarTable();
         listarGrupo();

@@ -27,36 +27,30 @@ public class AsignarGrupoDocente extends javax.swing.JFrame {
     DocenteDao vDocenteDao = new DocenteDao();
     
     
-   private InternalDocente  internalDocente;
-   private InternalGrupoAlumno internalGrupoAlumno;
+  public InternalGrupoAlumno internalGrupoAlumno;
+  public InternalDocente internalDocente;
    
-    public AsignarGrupoDocente(InternalDocente internalDocente, InternalGrupoAlumno internalGrupoAlumno) {
+    public AsignarGrupoDocente (InternalDocente internalDocente, InternalGrupoAlumno internalGrupoAlumno) {
         initComponents();
-        this.internalDocente = internalDocente;
-        this.internalGrupoAlumno = internalGrupoAlumno;
        
-        
-        
-        
         cargaComboCompletoGrupo();
         cargaComboCompletoDocente();
+        
+       
+        
         AutoCompleteDecorator.decorate(cbxNombreAsignarGrupo);
-         AutoCompleteDecorator.decorate(cbxNombreAsignarDocente);
+        AutoCompleteDecorator.decorate(cbxNombreAsignarDocente);
         
-        
+        btnRefrescarCampos.setVisible(false);
     }
-
-  
 
     public AsignarGrupoDocente() {
-
+        
     }
-
-    public AsignarGrupoDocente(InternalDocente aThis) {
-    }
-   
-
     
+    
+
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -73,6 +67,7 @@ public class AsignarGrupoDocente extends javax.swing.JFrame {
         btnEliminarGrupDocente = new javax.swing.JButton();
         txtCveGrupoDocente = new javax.swing.JTextField();
         txtRfcDocente = new javax.swing.JTextField();
+        btnRefrescarCampos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -127,6 +122,13 @@ public class AsignarGrupoDocente extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        btnRefrescarCampos.setText("Refrescar ");
+        btnRefrescarCampos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefrescarCamposActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -134,35 +136,43 @@ public class AsignarGrupoDocente extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(46, 46, 46)
                 .addComponent(panelAcciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(43, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(ASIGNAR_DOCENTE_TITLE)
-                .addGap(210, 210, 210))
+                .addContainerGap(59, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(cbxNombreAsignarDocente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel2)
-                        .addGap(31, 31, 31))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(ASIGNAR_DOCENTE_TITLE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cbxNombreAsignarDocente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel2)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(31, 31, 31)
+                                .addComponent(cbxNombreAsignarGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(83, 83, 83)
+                                .addComponent(btnRefrescarCampos, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtRfcDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cbxNombreAsignarGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCveGrupoDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(txtCveGrupoDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(155, 155, 155))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(ASIGNAR_DOCENTE_TITLE)
-                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ASIGNAR_DOCENTE_TITLE)
+                    .addComponent(btnRefrescarCampos))
+                .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtCveGrupoDocente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtRfcDocente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -180,6 +190,11 @@ public class AsignarGrupoDocente extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnRefrescarCamposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarCamposActionPerformed
+         cargaComboCompletoGrupo();
+        cargaComboCompletoDocente();
+    }//GEN-LAST:event_btnRefrescarCamposActionPerformed
 //**************** carga de  grupo *******************//
    public void cargaComboCompletoGrupo() {
         cbxNombreAsignarGrupo.removeAllItems();
@@ -275,6 +290,7 @@ public class AsignarGrupoDocente extends javax.swing.JFrame {
     private javax.swing.JButton btnCancelarGrupoDocente;
     private javax.swing.JButton btnEliminarGrupDocente;
     private javax.swing.JButton btnModificarGrupoDocente;
+    private javax.swing.JButton btnRefrescarCampos;
     private javax.swing.JComboBox<String> cbxNombreAsignarDocente;
     private javax.swing.JComboBox<String> cbxNombreAsignarGrupo;
     private javax.swing.JLabel jLabel1;
