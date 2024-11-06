@@ -775,7 +775,7 @@ DefaultTableModel tmp = new DefaultTableModel(); //para reportes
     agregarGrupo();  // Ajustes de botones
 }
 
-    
+     
     private void agregarGrupo(){
       txtCveGrupo.setEnabled(true);
       

@@ -9,10 +9,13 @@ import InternalFrame.InternalDocente;
 import InternalFrame.InternalGrupoAlumno;
 import Modelo.Docente;
 import Modelo.DocenteDao;
+import Modelo.DocenteGrupo;
+import Modelo.DocenteGrupoDao;
 import Modelo.Grupo;
 import Modelo.GrupoDao;
 import Modelo.Licenciatura;
 import java.util.List;
+import javax.swing.JOptionPane;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 /**
@@ -25,6 +28,9 @@ public class AsignarGrupoDocente extends javax.swing.JFrame {
       
     Docente vDocente = new Docente();
     DocenteDao vDocenteDao = new DocenteDao();
+    
+    DocenteGrupo vDocenteGrupo = new DocenteGrupo();
+    DocenteGrupoDao vDocenteGrupoDao = new DocenteGrupoDao();
     
     
   public InternalGrupoAlumno internalGrupoAlumno;
@@ -41,7 +47,7 @@ public class AsignarGrupoDocente extends javax.swing.JFrame {
         AutoCompleteDecorator.decorate(cbxNombreAsignarGrupo);
         AutoCompleteDecorator.decorate(cbxNombreAsignarDocente);
         
-        btnRefrescarCampos.setVisible(false);
+        
     }
 
     public AsignarGrupoDocente() {
@@ -85,15 +91,35 @@ public class AsignarGrupoDocente extends javax.swing.JFrame {
 
         btnAgregarGrupoDocente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/20xAgregar.png"))); // NOI18N
         btnAgregarGrupoDocente.setText("Asignar Grupo");
+        btnAgregarGrupoDocente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarGrupoDocenteActionPerformed(evt);
+            }
+        });
 
         btnModificarGrupoDocente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/20xModificar.png"))); // NOI18N
         btnModificarGrupoDocente.setText("Modificar");
+        btnModificarGrupoDocente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarGrupoDocenteActionPerformed(evt);
+            }
+        });
 
         btnCancelarGrupoDocente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/20xCancelar.png"))); // NOI18N
         btnCancelarGrupoDocente.setText("Cancelar");
+        btnCancelarGrupoDocente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarGrupoDocenteActionPerformed(evt);
+            }
+        });
 
         btnEliminarGrupDocente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/20xEliminar.png"))); // NOI18N
         btnEliminarGrupDocente.setText("Eliminar");
+        btnEliminarGrupDocente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarGrupDocenteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelAccionesLayout = new javax.swing.GroupLayout(panelAcciones);
         panelAcciones.setLayout(panelAccionesLayout);
@@ -122,6 +148,7 @@ public class AsignarGrupoDocente extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        btnRefrescarCampos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/x20Refresh.png"))); // NOI18N
         btnRefrescarCampos.setText("Refrescar ");
         btnRefrescarCampos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -151,13 +178,10 @@ public class AsignarGrupoDocente extends javax.swing.JFrame {
                                 .addComponent(cbxNombreAsignarDocente, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel2)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(31, 31, 31)
-                                .addComponent(cbxNombreAsignarGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(83, 83, 83)
-                                .addComponent(btnRefrescarCampos, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(31, 31, 31)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(cbxNombreAsignarGrupo, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnRefrescarCampos, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap())
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtRfcDocente, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -195,6 +219,41 @@ public class AsignarGrupoDocente extends javax.swing.JFrame {
          cargaComboCompletoGrupo();
         cargaComboCompletoDocente();
     }//GEN-LAST:event_btnRefrescarCamposActionPerformed
+
+    private void btnAgregarGrupoDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarGrupoDocenteActionPerformed
+      
+        if(!"".equals(cbxNombreAsignarDocente.getSelectedItem())&& !"".equals(cbxNombreAsignarGrupo.getSelectedItem())){
+        vDocenteGrupo.setRfcDocente(txtRfcDocente.getText());
+        vDocenteGrupo.setCveGrupo(txtCveGrupoDocente.getText());  
+        vDocenteGrupoDao.agregarDocenteGrupo(vDocenteGrupo); //se manda a traer del DAO grupo la funcion registrar
+        JOptionPane.showMessageDialog(null, "Acción registrada con exito!!");
+        //limpiarTable();
+        limpiarDocenteGrupo();
+        //listarLicenciatura();
+         
+       
+        
+        }else{
+        JOptionPane.showMessageDialog(null, "HAY CAMPOS VACIOS"); 
+       
+        
+    }   
+        
+        
+        
+    }//GEN-LAST:event_btnAgregarGrupoDocenteActionPerformed
+
+    private void btnModificarGrupoDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarGrupoDocenteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnModificarGrupoDocenteActionPerformed
+
+    private void btnCancelarGrupoDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarGrupoDocenteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCancelarGrupoDocenteActionPerformed
+
+    private void btnEliminarGrupDocenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarGrupDocenteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEliminarGrupDocenteActionPerformed
 //**************** carga de  grupo *******************//
    public void cargaComboCompletoGrupo() {
         cbxNombreAsignarGrupo.removeAllItems();
@@ -299,4 +358,25 @@ public class AsignarGrupoDocente extends javax.swing.JFrame {
     private javax.swing.JTextField txtCveGrupoDocente;
     private javax.swing.JTextField txtRfcDocente;
     // End of variables declaration//GEN-END:variables
+
+    private void limpiarDocenteGrupo() {
+     
+       cbxNombreAsignarDocente.setSelectedIndex(0);
+       cbxNombreAsignarGrupo.setSelectedIndex(0);
+        
+        agregarDocenteGrupo();
+    }
+
+    private void agregarDocenteGrupo(){
+    
+      btnAgregarGrupoDocente.setEnabled(true);
+      btnModificarGrupoDocente.setEnabled(false);
+      btnCancelarGrupoDocente.setEnabled(true);
+      btnEliminarGrupDocente.setEnabled(false);
+    }
+    
+    
+    
+    
+    
 }

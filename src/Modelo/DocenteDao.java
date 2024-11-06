@@ -137,7 +137,7 @@ public class DocenteDao {
 
     }
     
-    public List<Docente> obtenerDocente() {
+     public List<Docente> obtenerDocente() {
         List<Docente> docentes = new ArrayList<>();
 //        String query = "SELECT  nombreDocente, rfcDocente FROM docente_tbl";
          String query = "call OBTENER_DOCENTE()";
@@ -161,4 +161,7 @@ public class DocenteDao {
         return docentes;
     }
     
+     
+     
+     
 }
