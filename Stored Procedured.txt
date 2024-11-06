@@ -1,0 +1,4 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `OBTENER_DOCENTE`()
+BEGIN
+SELECT concat(nombreDocente," ",apePaternoDocente," ",apeMaternoDocente)as nombreCompleto, rfcDocente from docente_tbl;
+END
