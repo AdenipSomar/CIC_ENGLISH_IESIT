@@ -17,6 +17,8 @@ public class Alumno {
     String generacion;
     
     int semestre;
+    String statusConstancia;
+    String observaciones;
     
     String rvoeLicenciatura;
     String nombreLicenciatura;
@@ -27,13 +29,15 @@ public class Alumno {
     public Alumno() {
     }
 
-    public Alumno(String matricula, String nombreAlumno, String apellidoPaterno, String apellidoMaterno, String generacion, int semestre, String rvoeLicenciatura, String nombreLicenciatura, String cveGrupo, String nombreGrupo) {
+    public Alumno(String matricula, String nombreAlumno, String apellidoPaterno, String apellidoMaterno, String generacion, int semestre, String statusConstancia, String observaciones, String rvoeLicenciatura, String nombreLicenciatura, String cveGrupo, String nombreGrupo) {
         this.matricula = matricula;
         this.nombreAlumno = nombreAlumno;
         this.apellidoPaterno = apellidoPaterno;
         this.apellidoMaterno = apellidoMaterno;
         this.generacion = generacion;
         this.semestre = semestre;
+        this.statusConstancia = statusConstancia;
+        this.observaciones = observaciones;
         this.rvoeLicenciatura = rvoeLicenciatura;
         this.nombreLicenciatura = nombreLicenciatura;
         this.cveGrupo = cveGrupo;
@@ -88,6 +92,22 @@ public class Alumno {
         this.semestre = semestre;
     }
 
+    public String getStatusConstancia() {
+        return statusConstancia;
+    }
+
+    public void setStatusConstancia(String statusConstancia) {
+        this.statusConstancia = statusConstancia;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
     public String getRvoeLicenciatura() {
         return rvoeLicenciatura;
     }
@@ -119,6 +139,8 @@ public class Alumno {
     public void setNombreGrupo(String nombreGrupo) {
         this.nombreGrupo = nombreGrupo;
     }
+
+    
 
  
 

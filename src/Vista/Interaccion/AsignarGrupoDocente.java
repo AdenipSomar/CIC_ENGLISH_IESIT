@@ -373,6 +373,7 @@ public class AsignarGrupoDocente extends javax.swing.JFrame {
       btnModificarGrupoDocente.setEnabled(false);
       btnCancelarGrupoDocente.setEnabled(true);
       btnEliminarGrupDocente.setEnabled(false);
+      
     }
     
     

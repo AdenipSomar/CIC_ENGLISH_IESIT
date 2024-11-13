@@ -39,11 +39,11 @@
                                   <Group type="102" attributes="0">
                                       <Component id="MATRICULA" min="-2" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="txtMatriculaAsignarGrupo" min="-2" pref="160" max="-2" attributes="0"/>
+                                      <Component id="cbxMatriculaAsignarGrupo" min="-2" pref="160" max="-2" attributes="0"/>
                                       <EmptySpace max="32767" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
-                                      <Component id="jTextField1" min="-2" pref="124" max="-2" attributes="0"/>
+                                      <Component id="txtMatriculaAlumno" min="-2" pref="124" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="150" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
@@ -52,10 +52,11 @@
                       </Group>
                       <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="txtGrupoAsignarGrupo" min="-2" pref="211" max="-2" attributes="0"/>
-                          <Component id="jTextField2" min="-2" pref="171" max="-2" attributes="0"/>
+                          <Component id="cbxGrupoAsignarGrupo" min="-2" pref="211" max="-2" attributes="0"/>
+                          <Component id="txtClaveGrupo" min="-2" pref="171" max="-2" attributes="0"/>
                       </Group>
                   </Group>
+                  <Component id="btnRefrescarAsignarGrupoAlumno" alignment="1" min="-2" pref="125" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="38" max="32767" attributes="0"/>
           </Group>
@@ -65,18 +66,21 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnRefrescarAsignarGrupoAlumno" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="MATRICULA" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtMatriculaAsignarGrupo" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cbxMatriculaAsignarGrupo" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="GRUPO" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtGrupoAsignarGrupo" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cbxGrupoAsignarGrupo" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jTextField1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextField2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtMatriculaAlumno" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtClaveGrupo" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="panelAcciones" max="32767" attributes="0"/>
@@ -96,7 +100,7 @@
         <Property name="text" type="java.lang.String" value="MATRICULA: "/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="txtMatriculaAsignarGrupo">
+    <Component class="javax.swing.JComboBox" name="cbxMatriculaAsignarGrupo">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="4">
@@ -116,7 +120,7 @@
         <Property name="text" type="java.lang.String" value="GRUPO:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JComboBox" name="txtGrupoAsignarGrupo">
+    <Component class="javax.swing.JComboBox" name="cbxGrupoAsignarGrupo">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
           <StringArray count="4">
@@ -177,6 +181,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Asignar Grupo"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAgregarGrupoAlumnoActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnModificarGrupoAlumno">
           <Properties>
@@ -185,6 +192,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Modificar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnModificarGrupoAlumnoActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnCancelarGrupoAlumno">
           <Properties>
@@ -193,6 +203,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Cancelar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarGrupoAlumnoActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnEliminarGrupoAlumno">
           <Properties>
@@ -201,18 +214,26 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Eliminar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEliminarGrupoAlumnoActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JTextField" name="jTextField1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jTextField1"/>
-      </Properties>
+    <Component class="javax.swing.JTextField" name="txtMatriculaAlumno">
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextField2">
+    <Component class="javax.swing.JTextField" name="txtClaveGrupo">
+    </Component>
+    <Component class="javax.swing.JButton" name="btnRefrescarAsignarGrupoAlumno">
       <Properties>
-        <Property name="text" type="java.lang.String" value="jTextField2"/>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/Img/x20Refresh.png"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Refrescar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRefrescarAsignarGrupoAlumnoActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

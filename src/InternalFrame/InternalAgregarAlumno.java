@@ -78,8 +78,7 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
     //Termina la parte de la carga de combo de licenciatura en la parte de Proveedor
     //+++++++
     
-    
-   
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -732,7 +731,10 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnCerrarPestañaAlumnosActionPerformed
 
     private void btnAgregarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarAlumnoActionPerformed
-        // TODO add your handling code here:
+      
+        
+        
+        
     }//GEN-LAST:event_btnAgregarAlumnoActionPerformed
 
     private void btnModificarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarAlumnoActionPerformed

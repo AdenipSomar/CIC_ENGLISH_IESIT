@@ -153,8 +153,7 @@ public class GrupoDao {
         }
 
     }
-     
-     
+        
     public List<Grupo> obtenerGrupo() {
         List<Grupo> grupos = new ArrayList<>();
         String query = "SELECT nombreGrupo, cveGrupo FROM grupo_tbl";
