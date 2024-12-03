@@ -55,7 +55,9 @@ public class GrupoDao {
             return false;
         } finally {
             try {
-                con.close();
+                 if (con != null) {
+            con.close(); // Cierra la conexión
+                }
             } catch (SQLException e) {
                 System.out.println(e.toString());
             }
@@ -122,7 +124,9 @@ public class GrupoDao {
         return false;
     } finally {
         try {
-            con.close();
+            if (con != null) {
+            con.close(); // Cierra la conexión
+            }
         } catch (SQLException e) {
             System.out.println(e.toString());
         }
@@ -145,7 +149,9 @@ public class GrupoDao {
             return false;
         } finally {
             try {
-                con.close();
+                if (con != null) {
+            con.close(); // Cierra la conexión
+                }
             } catch (SQLException ex) {
                 System.out.println(ex.toString());
                 

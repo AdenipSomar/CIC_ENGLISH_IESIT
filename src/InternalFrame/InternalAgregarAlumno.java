@@ -5,16 +5,23 @@
  */
 package InternalFrame;
 
+import Modelo.Alumno;
+import Modelo.AlumnoDao;
 import Modelo.Eventos;
 import Modelo.Licenciatura;
 import Modelo.LicenciaturaDao;
 import Vista.Interaccion.AgregarLicenciatura;
 import Vista.Interaccion.AsignarCalificacionAlumno;
 import Vista.Interaccion.AsignarGrupoAlumno;
+import Vista.Interaccion.SeleccionarAlumno;
 import Vista.VistaPrincipal;
 import java.awt.Container;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
+import javax.swing.table.DefaultTableModel;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 /**
@@ -27,7 +34,15 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
     Licenciatura lic = new Licenciatura();
     LicenciaturaDao licenciaturaDao = new LicenciaturaDao();
     
+    Alumno vAlumno = new Alumno();
+    AlumnoDao vAlumnoDao = new AlumnoDao();
     
+    SeleccionarAlumno SelecAlum = new SeleccionarAlumno();
+    
+    
+    DefaultTableModel modelo = new DefaultTableModel(); //para las tablas
+    DefaultTableModel tmp = new DefaultTableModel(); //para reportes
+
     private VistaPrincipal vistaprincipal;
     Eventos evt = new Eventos();
     
@@ -41,12 +56,17 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
         setBorder(null);  
         
         initComponents();
+        vAlumnoDao.obtenerAlumno_busqueda();
         
         cargaComboCompletoLicenciatura();
         AutoCompleteDecorator.decorate(cbxLicenciatura);
         
         
     }
+
+    public InternalAgregarAlumno() {
+    }
+   
 
     
      public void cargaComboCompletoLicenciatura() {
@@ -75,8 +95,17 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
             }
         }
     }
-    //Termina la parte de la carga de combo de licenciatura en la parte de Proveedor
+    //Termina la parte de la carga de combo de licenciatura 
     //+++++++
+    
+    //limpiar table
+    public void limpiarTable(){ 
+// para que no se repitan los datos al mostrarse en las tablas
+    for (int i=0; i<modelo.getRowCount();i++){
+        modelo.removeRow(i);
+        i= i-1;
+    }
+    } 
     
 
     @SuppressWarnings("unchecked")
@@ -100,8 +129,6 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
         cbxLicenciatura = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         txtNombreAlumno = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        checkEstadoConstanciaAlumno = new javax.swing.JCheckBox();
         btnAgregarLicenciatura = new javax.swing.JButton();
         txtRvoeLicenciaturaAlumno = new javax.swing.JTextField();
         panelAcciones = new javax.swing.JPanel();
@@ -109,15 +136,6 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
         btnModificarAlumno = new javax.swing.JButton();
         btnCancelarAlumno = new javax.swing.JButton();
         btnEliminarAlumno = new javax.swing.JButton();
-        accionesAlumno = new javax.swing.JPanel();
-        btnCalificaciones = new javax.swing.JButton();
-        btnAsignarGrupo = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tableAlumnos = new javax.swing.JTable();
-        panelBusqueda = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        txtBusquedaNombre = new javax.swing.JTextField();
-        btnBuscar = new javax.swing.JButton();
         jInternalFrame1 = new javax.swing.JInternalFrame();
         jLabel5 = new javax.swing.JLabel();
         btnCerrarPestañaAlumnos1 = new javax.swing.JButton();
@@ -152,6 +170,15 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
         jLabel8 = new javax.swing.JLabel();
         txtBusquedaNombre1 = new javax.swing.JTextField();
         btnBuscar1 = new javax.swing.JButton();
+        btnAbrirVentana = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        cbEstadoConstanciaAlumno = new javax.swing.JCheckBox();
+        jLabel9 = new javax.swing.JLabel();
+        txtObservaciones = new javax.swing.JTextField();
+        btnCalificaciones = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        cbxAsignarGrupoAlumno = new javax.swing.JComboBox<>();
 
         jLabel1.setText("APARTADO DE ALUMNOS");
 
@@ -181,10 +208,6 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
 
         jLabel2.setText("NOMBRE: ");
 
-        jLabel4.setText("ESTATUS CONSTANCIA: ");
-
-        checkEstadoConstanciaAlumno.setText("ENTREGADO");
-
         btnAgregarLicenciatura.setText("+");
         btnAgregarLicenciatura.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -199,35 +222,32 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
             .addGroup(panelAlumnosInfoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelAlumnosInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(LBLNOMBRE)
-                    .addComponent(LBLPATERNO)
-                    .addComponent(LBLMATERNO)
                     .addGroup(panelAlumnosInfoLayout.createSequentialGroup()
                         .addComponent(LBLLICENCIATURA)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
                         .addComponent(txtRvoeLicenciaturaAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(LBLGENERACION)
-                    .addComponent(LBLSEMESTRE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panelAlumnosInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelAlumnosInfoLayout.createSequentialGroup()
-                        .addComponent(checkEstadoConstanciaAlumno)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(panelAlumnosInfoLayout.createSequentialGroup()
                         .addGroup(panelAlumnosInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelAlumnosInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtMatricula, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
-                                .addComponent(txtPaternoAlumno)
-                                .addComponent(txtMaternoAlumno)
-                                .addComponent(txtGeneracion)
-                                .addComponent(txtSemestre)
-                                .addComponent(txtNombreAlumno))
-                            .addComponent(cbxLicenciatura, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnAgregarLicenciatura, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addComponent(LBLNOMBRE)
+                            .addComponent(LBLPATERNO)
+                            .addComponent(LBLMATERNO)
+                            .addComponent(LBLGENERACION)
+                            .addComponent(LBLSEMESTRE)
+                            .addComponent(jLabel2))
+                        .addGap(0, 50, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panelAlumnosInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelAlumnosInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(txtMatricula, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
+                        .addComponent(txtPaternoAlumno)
+                        .addComponent(txtMaternoAlumno)
+                        .addComponent(txtGeneracion)
+                        .addComponent(txtSemestre)
+                        .addComponent(txtNombreAlumno))
+                    .addComponent(cbxLicenciatura, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnAgregarLicenciatura, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         panelAlumnosInfoLayout.setVerticalGroup(
             panelAlumnosInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -262,11 +282,7 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
                 .addGroup(panelAlumnosInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LBLSEMESTRE)
                     .addComponent(txtSemestre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(panelAlumnosInfoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(checkEstadoConstanciaAlumno))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(103, Short.MAX_VALUE))
         );
 
         panelAcciones.setBackground(new java.awt.Color(204, 255, 204));
@@ -328,90 +344,6 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
                     .addComponent(btnCancelarAlumno)
                     .addComponent(btnEliminarAlumno))
                 .addContainerGap())
-        );
-
-        accionesAlumno.setBackground(new java.awt.Color(255, 255, 204));
-
-        btnCalificaciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/x20Notas.png"))); // NOI18N
-        btnCalificaciones.setText("Calificaciones");
-        btnCalificaciones.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCalificacionesActionPerformed(evt);
-            }
-        });
-
-        btnAsignarGrupo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/x20clase.png"))); // NOI18N
-        btnAsignarGrupo.setText("Asignar Grupo");
-        btnAsignarGrupo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAsignarGrupoActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout accionesAlumnoLayout = new javax.swing.GroupLayout(accionesAlumno);
-        accionesAlumno.setLayout(accionesAlumnoLayout);
-        accionesAlumnoLayout.setHorizontalGroup(
-            accionesAlumnoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(accionesAlumnoLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(btnCalificaciones)
-                .addGap(28, 28, 28)
-                .addComponent(btnAsignarGrupo)
-                .addContainerGap(100, Short.MAX_VALUE))
-        );
-        accionesAlumnoLayout.setVerticalGroup(
-            accionesAlumnoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, accionesAlumnoLayout.createSequentialGroup()
-                .addContainerGap(20, Short.MAX_VALUE)
-                .addGroup(accionesAlumnoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnCalificaciones)
-                    .addComponent(btnAsignarGrupo))
-                .addContainerGap())
-        );
-
-        tableAlumnos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "MATRICULA", "NOMBRE", "PETERNO", "MATERNO", "codLicenciatura", "LICENCIATURA", "GENERACIÓN", "SEMESTRE"
-            }
-        ));
-        jScrollPane1.setViewportView(tableAlumnos);
-
-        panelBusqueda.setBackground(new java.awt.Color(204, 255, 204));
-
-        jLabel3.setText("BUSQUEDA POR NOMBRE");
-
-        btnBuscar.setText("Buscar");
-        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout panelBusquedaLayout = new javax.swing.GroupLayout(panelBusqueda);
-        panelBusqueda.setLayout(panelBusquedaLayout);
-        panelBusquedaLayout.setHorizontalGroup(
-            panelBusquedaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelBusquedaLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3)
-                .addGap(18, 18, 18)
-                .addComponent(txtBusquedaNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnBuscar)
-                .addContainerGap(170, Short.MAX_VALUE))
-        );
-        panelBusquedaLayout.setVerticalGroup(
-            panelBusquedaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelBusquedaLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelBusquedaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(txtBusquedaNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscar))
-                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         jInternalFrame1.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -513,7 +445,7 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
                 .addGroup(panelAlumnosInfo1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(jCheckBox2))
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jInternalFrame1.getContentPane().add(panelAlumnosInfo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 40, -1, 320));
@@ -671,6 +603,79 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
 
         jInternalFrame1.getContentPane().add(panelBusqueda1, new org.netbeans.lib.awtextra.AbsoluteConstraints(491, 25, 620, -1));
 
+        btnAbrirVentana.setMnemonic('1');
+        btnAbrirVentana.setText("Abrir ventana");
+        btnAbrirVentana.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAbrirVentanaActionPerformed(evt);
+            }
+        });
+
+        jPanel1.setBackground(new java.awt.Color(204, 255, 204));
+
+        jLabel4.setText("ESTATUS CONSTANCIA: ");
+
+        cbEstadoConstanciaAlumno.setText("ENTREGADO");
+
+        jLabel9.setText("OBSERVACIONES:");
+
+        btnCalificaciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/x20Notas.png"))); // NOI18N
+        btnCalificaciones.setText("Calificaciones");
+        btnCalificaciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCalificacionesActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("ASIGNAR GRUPO:");
+
+        cbxAsignarGrupoAlumno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel4)
+                        .addGap(47, 47, 47)
+                        .addComponent(cbEstadoConstanciaAlumno))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(140, 140, 140)
+                        .addComponent(btnCalificaciones))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel3))
+                        .addGap(39, 39, 39)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtObservaciones, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
+                            .addComponent(cbxAsignarGrupoAlumno, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(49, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(cbEstadoConstanciaAlumno))
+                .addGap(28, 28, 28)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addGap(27, 27, 27)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(cbxAsignarGrupoAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 200, Short.MAX_VALUE)
+                .addComponent(btnCalificaciones)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -679,48 +684,46 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(panelAcciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(50, 50, 50)
-                        .addComponent(accionesAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCerrarPestañaAlumnos, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(513, 513, 513)
-                        .addComponent(jLabel1))
+                        .addComponent(jLabel1)))
+                .addContainerGap(616, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(panelAcciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(176, 176, 176)
+                        .addComponent(btnCerrarPestañaAlumnos, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAbrirVentana, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(3, 3, 3))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(panelAlumnosInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(35, 35, 35)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(panelBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 620, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(58, 58, 58)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(374, 374, 374)
-                        .addComponent(panelAcciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelAlumnosInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(26, 26, 26)
-                                .addComponent(panelAlumnosInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(panelBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(11, 11, 11)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(11, 11, 11)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(accionesAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnCerrarPestañaAlumnos))))
-                .addGap(32, 32, 32))
+                        .addGap(31, 31, 31)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnCerrarPestañaAlumnos)
+                            .addComponent(btnAbrirVentana)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(panelAcciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
 
         pack();
@@ -732,7 +735,30 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
 
     private void btnAgregarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarAlumnoActionPerformed
       
+        if (!"".equals(txtMatricula.getText()) &&
+        !"".equals(txtNombreAlumno.getText()) &&
+        !"".equals(txtPaternoAlumno.getText())) {
+
+        vAlumno.setMatricula(txtMatricula.getText());      
+        vAlumno.setNombreAlumno(txtNombreAlumno.getText());
+        vAlumno.setApellidoPaterno(txtPaternoAlumno.getText());
+        vAlumno.setApellidoMaterno(txtMaternoAlumno.getText());
+        vAlumno.setGeneracion(txtGeneracion.getText());
+        vAlumno.setSemestre(Integer.parseInt(txtSemestre.getText()));
+        vAlumno.setStatusConstancia(cbEstadoConstanciaAlumno.isSelected() ? "1" : "0"); //para saber si esta seleccionado el docente
         
+
+        // Limpiar y actualizar tabla
+           limpiarTable();
+        //listarDocente();
+         limpiarAlumno();
+        
+        // Mostrar mensaje de éxito
+        JOptionPane.showMessageDialog(null, "Nuevo Ingreso Registrado con éxito!!");
+
+        } else {
+        JOptionPane.showMessageDialog(null, "Hay campos vacíos");
+     }
         
         
     }//GEN-LAST:event_btnAgregarAlumnoActionPerformed
@@ -755,17 +781,6 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
          
        
     }//GEN-LAST:event_btnCalificacionesActionPerformed
-
-    private void btnAsignarGrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarGrupoActionPerformed
-       AsignarGrupoAlumno vAsignarGrupoAlumno = new AsignarGrupoAlumno();
-       vAsignarGrupoAlumno.setVisible(true);
-       
-        
-    }//GEN-LAST:event_btnAsignarGrupoActionPerformed
-
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnCerrarPestañaAlumnos1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarPestañaAlumnos1ActionPerformed
         // TODO add your handling code here:
@@ -804,6 +819,10 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
         vAgregarLicenciatura.setVisible(true);
     }//GEN-LAST:event_btnAgregarLicenciaturaActionPerformed
 
+    private void btnAbrirVentanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirVentanaActionPerformed
+       SelecAlum.setVisible(true);
+    }//GEN-LAST:event_btnAbrirVentanaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LBLGENERACION;
@@ -818,14 +837,12 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
     private javax.swing.JLabel LBLPATERNO1;
     private javax.swing.JLabel LBLSEMESTRE;
     private javax.swing.JLabel LBLSEMESTRE1;
-    private javax.swing.JPanel accionesAlumno;
     private javax.swing.JPanel accionesAlumno1;
+    private javax.swing.JButton btnAbrirVentana;
     private javax.swing.JButton btnAgregarAlumno;
     private javax.swing.JButton btnAgregarAlumno1;
     private javax.swing.JButton btnAgregarLicenciatura;
-    private javax.swing.JButton btnAsignarGrupo;
     private javax.swing.JButton btnAsignarGrupo1;
-    private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnBuscar1;
     private javax.swing.JButton btnCalificaciones;
     private javax.swing.JButton btnCalificaciones1;
@@ -837,9 +854,10 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnEliminarAlumno1;
     private javax.swing.JButton btnModificarAlumno;
     private javax.swing.JButton btnModificarAlumno1;
+    private javax.swing.JCheckBox cbEstadoConstanciaAlumno;
+    private javax.swing.JComboBox<String> cbxAsignarGrupoAlumno;
     private javax.swing.JComboBox<String> cbxLicenciatura;
     private javax.swing.JComboBox<String> cbxLicenciatura1;
-    private javax.swing.JCheckBox checkEstadoConstanciaAlumno;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
@@ -850,17 +868,15 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel panelAcciones;
     private javax.swing.JPanel panelAcciones1;
     private javax.swing.JPanel panelAlumnosInfo;
     private javax.swing.JPanel panelAlumnosInfo1;
-    private javax.swing.JPanel panelBusqueda;
     private javax.swing.JPanel panelBusqueda1;
-    private javax.swing.JTable tableAlumnos;
     private javax.swing.JTable tableAlumnos1;
-    private javax.swing.JTextField txtBusquedaNombre;
     private javax.swing.JTextField txtBusquedaNombre1;
     private javax.swing.JTextField txtGeneracion;
     private javax.swing.JTextField txtGeneracion1;
@@ -870,10 +886,52 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtMatricula1;
     private javax.swing.JTextField txtNombreAlumno;
     private javax.swing.JTextField txtNombreAlumno1;
+    private javax.swing.JTextField txtObservaciones;
     private javax.swing.JTextField txtPaternoAlumno;
     private javax.swing.JTextField txtPaternoAlumno1;
     private javax.swing.JTextField txtRvoeLicenciaturaAlumno;
     private javax.swing.JTextField txtSemestre;
     private javax.swing.JTextField txtSemestre1;
     // End of variables declaration//GEN-END:variables
+
+    public void limpiarAlumno() {
+        txtMatricula.setText("");
+        txtNombreAlumno.setText("");
+        txtPaternoAlumno.setText("");
+        txtMaternoAlumno.setText("");
+        txtGeneracion.setText("");
+        txtSemestre.setText("");
+        cbEstadoConstanciaAlumno.setSelected(false);
+        txtObservaciones.setText("");
+        cbxLicenciatura.setSelectedIndex(0);
+              
+        agregarAlumno();
+               
+    }
+    
+    public void agregarAlumno(){
+        txtMatricula.setEnabled(true);
+      
+      btnAgregarAlumno.setEnabled(true);
+      btnModificarAlumno.setEnabled(false);
+      btnCancelarAlumno.setEnabled(true);
+      btnEliminarAlumno.setEnabled(false);
+    }
+    
+    public void alumnoMouseClicked(){
+    btnAgregarAlumno.setEnabled(false);
+    btnModificarAlumno.setEnabled(true);
+    btnCancelarAlumno.setEnabled(true);
+    btnEliminarAlumno.setEnabled(true);
+    }
+    
+    
+    //METODOS PÚBLICOS PARA QUE PUEDAN SER USADOS POR EL JFRAME DE SELECCIONAR ALUMNOS
+    
+    public void setBMatricula(String matricula) {
+        txtMatricula.setText(matricula);
+  
+    }
+    
+    
 }

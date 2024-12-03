@@ -28,7 +28,9 @@ maxEstudiantes int(2) default null
 
 create table licenciatura_tbl(
 rvoe char(13) not null primary key,
-nombreLicenciatura varchar(70) not null 
+nombreLicenciatura varchar(70) not null,
+abreviacion varchar(3)not null 
+
 );
 create table docente_tbl(
 rfcDocente char(13) not null primary key,

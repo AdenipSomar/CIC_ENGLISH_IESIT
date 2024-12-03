@@ -18,6 +18,9 @@
 --
 -- Table structure for table `alumno_grupo_tbl`
 --
+DROP DATABASE IF EXISTS cic_english_iesit;
+CREATE DATABASE cic_english_iesit;
+USE cic_english_iesit;
 
 DROP TABLE IF EXISTS `alumno_grupo_tbl`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

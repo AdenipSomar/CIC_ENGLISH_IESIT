@@ -22,6 +22,7 @@ public class Alumno {
     
     String rvoeLicenciatura;
     String nombreLicenciatura;
+    String abreviacion;
     
     String cveGrupo;
     String nombreGrupo;
@@ -29,7 +30,7 @@ public class Alumno {
     public Alumno() {
     }
 
-    public Alumno(String matricula, String nombreAlumno, String apellidoPaterno, String apellidoMaterno, String generacion, int semestre, String statusConstancia, String observaciones, String rvoeLicenciatura, String nombreLicenciatura, String cveGrupo, String nombreGrupo) {
+    public Alumno(String matricula, String nombreAlumno, String apellidoPaterno, String apellidoMaterno, String generacion, int semestre, String statusConstancia, String observaciones, String rvoeLicenciatura, String nombreLicenciatura, String abreviacion, String cveGrupo, String nombreGrupo) {
         this.matricula = matricula;
         this.nombreAlumno = nombreAlumno;
         this.apellidoPaterno = apellidoPaterno;
@@ -40,6 +41,7 @@ public class Alumno {
         this.observaciones = observaciones;
         this.rvoeLicenciatura = rvoeLicenciatura;
         this.nombreLicenciatura = nombreLicenciatura;
+        this.abreviacion = abreviacion;
         this.cveGrupo = cveGrupo;
         this.nombreGrupo = nombreGrupo;
     }
@@ -124,6 +126,14 @@ public class Alumno {
         this.nombreLicenciatura = nombreLicenciatura;
     }
 
+    public String getAbreviacion() {
+        return abreviacion;
+    }
+
+    public void setAbreviacion(String abreviacion) {
+        this.abreviacion = abreviacion;
+    }
+
     public String getCveGrupo() {
         return cveGrupo;
     }
@@ -139,6 +149,8 @@ public class Alumno {
     public void setNombreGrupo(String nombreGrupo) {
         this.nombreGrupo = nombreGrupo;
     }
+
+   
 
     
 

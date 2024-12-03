@@ -52,7 +52,9 @@ public class AlumnoDao {
             return false;
         } finally {
             try {
-                con.close();
+                 if (con != null) {
+            con.close(); // Cierra la conexión
+                    }
             } catch (SQLException e) {
                 System.out.println(e.toString());
             }
@@ -62,31 +64,38 @@ public class AlumnoDao {
 
     } 
     
-    public List ListarAlumno() {
-        List<Alumno> ListaAlum = new ArrayList();
-        String sql = "SELECT * FROM alumno_tbl";
-        try {
-            con = cn.getConnection();
-            ps = con.prepareStatement(sql);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                Alumno alum = new Alumno();
-                alum.setMatricula(rs.getString("matricula"));
-                alum.setApellidoPaterno(rs.getString("apePaternoAalumno"));
-                alum.setApellidoMaterno(rs.getString("apeMaternoAlumno"));
-                alum.setGeneracion(rs.getString("generacion"));
-                alum.setSemestre(rs.getInt("semestre"));
-                alum.setStatusConstancia(rs.getString("estatusConstancia"));
-                alum.setObservaciones(rs.getString("observaciones"));
-                alum.setCveGrupo(rs.getString("cveGrupo"));
-                alum.setRvoeLicenciatura(rs.getString("rvoe"));
-                ListaAlum.add(alum);
-            }
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.toString());
-        }
-        return ListaAlum;
-    }
+//    public List ListarAlumno() {
+//        List<Alumno> ListaAlum = new ArrayList();
+//        String sql = "SELECT * FROM alumno_tbl";
+//        try {
+//            con = cn.getConnection();
+//            ps = con.prepareStatement(sql);
+//            rs = ps.executeQuery();
+//            while (rs.next()) {
+//                Alumno alum = new Alumno();
+//                alum.setMatricula(rs.getString("matricula"));
+//                alum.setApellidoPaterno(rs.getString("apePaternoAalumno"));
+//                alum.setApellidoMaterno(rs.getString("apeMaternoAlumno"));
+//                alum.setGeneracion(rs.getString("generacion"));
+//                alum.setSemestre(rs.getInt("semestre"));
+//                alum.setStatusConstancia(rs.getString("estatusConstancia"));
+//                alum.setObservaciones(rs.getString("observaciones"));
+//                alum.setCveGrupo(rs.getString("cveGrupo"));
+//                alum.setNombreGrupo(rs.getString("nombreGrupo"));
+//                alum.setRvoeLicenciatura(rs.getString("rvoe"));
+//                alum.setNombreLicenciatura(rs.getString("nombreLicenciatura"));
+//                alum.setAbreviacion(rs.getString("abreviacion"));
+//                ListaAlum.add(alum);
+//            }
+//        } catch (SQLException e) {
+//            JOptionPane.showMessageDialog(null, e.toString());
+//        }
+//        return ListaAlum;
+//    }
+//    
+    
+    
+    
     
     public boolean modificarAlumno(Alumno alum) {
     String sql = "UPDATE alumno_tbl SET nombreAlumno=?, apePaternoAlumno=?, apeMaternoAlumno=?, generacion=?, semestre=?, estatusConstancia=?, observaciones=?, cveGrupo=?,rvoe=? WHERE matricula=?";
@@ -114,7 +123,9 @@ public class AlumnoDao {
         return false;
     } finally {
         try {
-            con.close();
+            if (con != null) {
+            con.close(); // Cierra la conexión
+        }
         } catch (SQLException e) {
             System.out.println(e.toString());
         }
@@ -137,7 +148,9 @@ public class AlumnoDao {
             return false;
         } finally {
             try {
-                con.close();
+                if (con != null) {
+            con.close(); // Cierra la conexión
+                }
             } catch (SQLException ex) {
                 System.out.println(ex.toString());
                 
@@ -146,7 +159,30 @@ public class AlumnoDao {
 
     }
     
-    public List<Alumno> obtenerAlumno() {
+//    public List<Alumno> obtenerAlumno() {
+//        List<Alumno> alumnos = new ArrayList<>();
+//        //String query = "SELECT nombreGrupo, cveGrupo FROM grupo_tbl";
+//        String query = "CALL OBTENER_ALUMNO()";
+//        
+//        try (Connection con = conexion.getConnection();
+//             PreparedStatement pst = con.prepareStatement(query);
+//             ResultSet rs = pst.executeQuery()) {
+//
+//            while (rs.next()) {
+//                String nombreAlumno = rs.getString("nombreCompleto");
+//                String matricula = rs.getString("matricula");
+//                int semestre = 0; // Usamos 0 para suplir el valor int
+//
+//                Alumno alumno = new Alumno(matricula, nombreAlumno, "","","",semestre, "", "", "","","","","");
+//                alumnos.add(alumno);
+//            }
+//        } catch (SQLException e) {
+//            JOptionPane.showMessageDialog(null, "Error al obtener ciudades desde la base de datos: " + e.getMessage());
+//        }
+//        return alumnos;
+//    }
+    
+    public List<Alumno> obtenerAlumno_busqueda() {
         List<Alumno> alumnos = new ArrayList<>();
         //String query = "SELECT nombreGrupo, cveGrupo FROM grupo_tbl";
         String query = "CALL OBTENER_ALUMNO()";
@@ -156,18 +192,27 @@ public class AlumnoDao {
              ResultSet rs = pst.executeQuery()) {
 
             while (rs.next()) {
-                String nombreAlumno = rs.getString("nombreCompleto");
                 String matricula = rs.getString("matricula");
-                int semestre = 0; // Usamos 0 para suplir el valor int
+                String nombreAlumno = rs.getString("nombreCompleto");
+                String abreviacion = rs.getString("licenciatura");
+                int semestre = 0; // Usamos 0 para suplir el valor int      
+//                // Crear el mensaje concatenado
+//    String mensaje = "Matrícula: " + matricula + 
+//                     "\nNombre Completo: " + nombreAlumno + 
+//                     "\nLicenciatura: " + abreviacion;
+//     JOptionPane.showMessageDialog(null, mensaje);
 
-                Alumno alumno = new Alumno(matricula, nombreAlumno, "","","",semestre, "", "", "","","","");
+                Alumno alumno = new Alumno(matricula, nombreAlumno, "","","",semestre, "", "", "","",abreviacion,"","");
                 alumnos.add(alumno);
+                
+               
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al obtener ciudades desde la base de datos: " + e.getMessage());
         }
         return alumnos;
     }
+    
     
    
     

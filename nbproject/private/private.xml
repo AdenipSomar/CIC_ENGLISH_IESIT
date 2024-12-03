@@ -3,8 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ramos/Documents/NetBeansProjects/CIC_ENGLISH_IESIT/src/Vista/Interaccion/AsignarGrupoAlumno.java</file>
-            <file>file:/C:/Users/ramos/Documents/NetBeansProjects/CIC_ENGLISH_IESIT/src/Vista/Interaccion/AsignarGrupoDocente.java</file>
+            <file>file:/C:/Users/ramos/Documents/NetBeansProjects/CIC_ENGLISH_IESIT/src/Modelo/GrupoDao.java</file>
+            <file>file:/C:/Users/ramos/Documents/NetBeansProjects/CIC_ENGLISH_IESIT/src/Vista/Interaccion/SeleccionarAlumno.java</file>
+            <file>file:/C:/Users/ramos/Documents/NetBeansProjects/CIC_ENGLISH_IESIT/src/Modelo/LicenciaturaDao.java</file>
             <file>file:/C:/Users/ramos/Documents/NetBeansProjects/CIC_ENGLISH_IESIT/src/InternalFrame/InternalAgregarAlumno.java</file>
         </group>
     </open-files>
