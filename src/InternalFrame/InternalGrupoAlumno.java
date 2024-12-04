@@ -28,6 +28,9 @@ AsignarGrupoDocente vAsignarGrupoDocente = new AsignarGrupoDocente(null, this);
 Grupo vGrupo = new Grupo();
 GrupoDao vGrupoDao = new GrupoDao();
 
+InternalAgregarAlumno vInternalAgregarAlumno = new InternalAgregarAlumno();
+
+
 private VistaPrincipal vistaprincipal;
 
 Eventos event = new Eventos();
@@ -57,8 +60,6 @@ DefaultTableModel tmp = new DefaultTableModel(); //para reportes
     }
     
  
-   
-
     public void listarGrupo(){
     List<Grupo> ListarGrp = vGrupoDao.ListarGrupo();
     modelo= (DefaultTableModel)tableGrupo.getModel();
@@ -486,6 +487,7 @@ DefaultTableModel tmp = new DefaultTableModel(); //para reportes
         // Insertar el docente en la base de datos
         vGrupoDao.agregarGrupo(vGrupo);
         vAsignarGrupoDocente.cargaComboCompletoGrupo();
+        
        
         
         
@@ -521,7 +523,7 @@ DefaultTableModel tmp = new DefaultTableModel(); //para reportes
                 listarGrupo();
                 //this.repaint();
                  vAsignarGrupoDocente.cargaComboCompletoGrupo();
-               
+                
                 
             } else {
                 // No es necesario un mensaje adicional aquí porque el DAO ya muestra el mensaje de error
@@ -567,6 +569,7 @@ DefaultTableModel tmp = new DefaultTableModel(); //para reportes
         
         vGrupoDao.modificarGrupo(vGrupo);
          vAsignarGrupoDocente.cargaComboCompletoGrupo();
+        
         limpiarGrupo();
         limpiarTable();
         listarGrupo();
