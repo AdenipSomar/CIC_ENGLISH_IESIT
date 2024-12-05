@@ -9,6 +9,8 @@ import Modelo.Alumno;
 import Modelo.AlumnoDao;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -27,14 +29,54 @@ public class SeleccionarAlumno extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
-        limpiarTable();
-        
+        limpiarTable();       
         listarSeleccionarAlumno();
         
+        
+        
+        
+        
+        
+        
+        // INICIA FILTRADO DE ALUMNOS
+        /// METODO PARAPODER FILTRAR EN TIEMPO REAL LA TABLA DE BUSQUEDA DE ALUMNOS
+        txtBuscarAlumnos.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                limpiarTable();
+                listarSeleccionarAlumno(); // Llama al método cuando se inserta texto
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                limpiarTable();
+                listarSeleccionarAlumno(); // Llama al método cuando se elimina texto
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                limpiarTable();
+                listarSeleccionarAlumno(); // Llama al método cuando hay cambios de formato (normalmente no aplica)
+            }
+        }
+        );       
+        /// TERMINA FILTRADO DE ALUMNOS
+          
     }
 
+    
+    
+       public void limpiarTable(){ 
+// para que no se repitan los datos al mostrarse en las tablas
+    for (int i=0; i<modelo.getRowCount();i++){
+        modelo.removeRow(i);
+        i= i-1;
+    }
+    }
     public void listarSeleccionarAlumno(){
-    List<Alumno> Listar = vAlumnoDao.listarAlumnos();
+        limpiarTable();
+        String filtro = txtBuscarAlumnos.getText().trim();
+    List<Alumno> Listar = vAlumnoDao.listarAlumnos(filtro);
     modelo= (DefaultTableModel)tablaAlumnos.getModel();
     Object [] obj = new Object[13];
     for(int i = 0; i<Listar.size();i++){
@@ -57,14 +99,7 @@ public class SeleccionarAlumno extends javax.swing.JDialog {
     tablaAlumnos.setModel(modelo);  
     }
      
-   public void limpiarTable(){ 
-// para que no se repitan los datos al mostrarse en las tablas
-    for (int i=0; i<modelo.getRowCount();i++){
-        modelo.removeRow(i);
-        i= i-1;
-    }
-    }
-   
+
    
    
    
@@ -81,7 +116,7 @@ public class SeleccionarAlumno extends javax.swing.JDialog {
         tablaAlumnos = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtBuscarAlumnos = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -138,26 +173,28 @@ public class SeleccionarAlumno extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(358, 358, 358)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtBuscarAlumnos, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 662, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(20, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(269, 269, 269))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(20, 20, 20)
                 .addComponent(jLabel1)
-                .addGap(38, 38, 38)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtBuscarAlumnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -314,7 +351,18 @@ if (filaSeleccionada >= 0) {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTable tablaAlumnos;
+    private javax.swing.JTextField txtBuscarAlumnos;
     // End of variables declaration//GEN-END:variables
+
+
+
+
+
+
+
+
+
 }
+
+

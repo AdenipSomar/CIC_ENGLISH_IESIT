@@ -63,32 +63,33 @@ public class AlumnoDao {
 
     } 
     
-    public List<Alumno> listarAlumnos() {
+    public List<Alumno> listarAlumnos(String filtro) {
     List<Alumno> listaAlum = new ArrayList<>();
-    String sql = "call OBTENER_ALUMNO()";
+    String sql = "call OBTENER_ALUMNO(?)";
 
     try (Connection con = cn.getConnection();
-         PreparedStatement ps = con.prepareStatement(sql);
-         ResultSet rs = ps.executeQuery()) {
+         PreparedStatement ps = con.prepareStatement(sql)) {
 
-        while (rs.next()) {
-            Alumno alum = new Alumno();
-            alum.setMatricula(rs.getString("matricula"));
-            alum.setNombreAlumno(rs.getString("nombreAlumno"));
-            alum.setApellidoPaterno(rs.getString("apePaternoAlumno"));
-            alum.setApellidoMaterno(rs.getString("apeMaternoAlumno"));
-            alum.setGeneracion(rs.getString("generacion"));
-            alum.setSemestre(rs.getInt("semestre"));
-            alum.setStatusConstancia(rs.getInt("estatusConstancia"));
-            alum.setObservaciones(rs.getString("observaciones"));
-            alum.setCveGrupo(rs.getString("cveGrupo"));
-            alum.setNombreGrupo(rs.getString("nombreGrupo"));
-            alum.setRvoeLicenciatura(rs.getString("rvoe"));
-            alum.setNombreLicenciatura(rs.getString("nombreLicenciatura"));
-            alum.setAbreviacion(rs.getString("licenciatura"));
-          
-
-            listaAlum.add(alum);
+        ps.setString(1, filtro); // Pasar el filtro al procedimiento almacenado
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Alumno alum = new Alumno();
+                alum.setMatricula(rs.getString("matricula"));
+                alum.setNombreAlumno(rs.getString("nombreAlumno"));
+                alum.setApellidoPaterno(rs.getString("apePaternoAlumno"));
+                alum.setApellidoMaterno(rs.getString("apeMaternoAlumno"));
+                alum.setGeneracion(rs.getString("generacion"));
+                alum.setSemestre(rs.getInt("semestre"));
+                alum.setStatusConstancia(rs.getInt("estatusConstancia"));
+                alum.setObservaciones(rs.getString("observaciones"));
+                alum.setCveGrupo(rs.getString("cveGrupo"));
+                alum.setNombreGrupo(rs.getString("nombreGrupo"));
+                alum.setRvoeLicenciatura(rs.getString("rvoe"));
+                alum.setNombreLicenciatura(rs.getString("nombreLicenciatura"));
+                alum.setAbreviacion(rs.getString("licenciatura"));
+                
+                listaAlum.add(alum);
+            }
         }
     } catch (SQLException e) {
         JOptionPane.showMessageDialog(null, "Error al listar alumnos: " + e.getMessage());

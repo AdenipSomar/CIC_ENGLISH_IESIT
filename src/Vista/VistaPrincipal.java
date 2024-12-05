@@ -27,6 +27,7 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.Timer;
 
 /**
@@ -63,6 +64,8 @@ public class VistaPrincipal extends javax.swing.JFrame {
         con = conexion.getConnection();
         
         
+        
+        
     }
 
 
@@ -76,6 +79,8 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         panelPrincipal = new javax.swing.JTabbedPane();
+        VistaPrincipal = new java.awt.Panel();
+        jLabel3 = new javax.swing.JLabel();
         mnuPrincipal = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         mniSalir = new javax.swing.JMenuItem();
@@ -115,7 +120,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(346, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,6 +133,29 @@ public class VistaPrincipal extends javax.swing.JFrame {
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
+
+        VistaPrincipal.setBackground(new java.awt.Color(255, 102, 102));
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/logo.png"))); // NOI18N
+
+        javax.swing.GroupLayout VistaPrincipalLayout = new javax.swing.GroupLayout(VistaPrincipal);
+        VistaPrincipal.setLayout(VistaPrincipalLayout);
+        VistaPrincipalLayout.setHorizontalGroup(
+            VistaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, VistaPrincipalLayout.createSequentialGroup()
+                .addContainerGap(405, Short.MAX_VALUE)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(446, 446, 446))
+        );
+        VistaPrincipalLayout.setVerticalGroup(
+            VistaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(VistaPrincipalLayout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(54, Short.MAX_VALUE))
+        );
+
+        panelPrincipal.addTab("C.I.C ENGLISH IESIT SYSTEM 0.0.1", VistaPrincipal);
 
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/x30ajustes.png"))); // NOI18N
         jMenu2.setText("  ARCHIVO");
@@ -212,7 +240,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(panelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)
+                .addComponent(panelPrincipal)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -228,7 +256,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
         public void actionPerformed(ActionEvent e) {
             // Obtiene la hora actual
             Calendar calendario = Calendar.getInstance();
-            calendario.add(Calendar.HOUR_OF_DAY, -1); // Resta una hora
+            calendario.add(Calendar.HOUR_OF_DAY,+ 0); // Resta una hora
 
             Date now = calendario.getTime();
             // Formatea la hora como "hh:mm:ss a" (formato de 12 horas con AM/PM)
@@ -596,12 +624,14 @@ public class VistaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private java.awt.Panel VistaPrincipal;
     private javax.swing.JMenuItem itemAgregarAlumno;
     private javax.swing.JMenuItem itemAgregarGrupoAlumno;
     private javax.swing.JMenuItem itemBajaAlumno;
     private javax.swing.JMenuItem itemDocente;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
