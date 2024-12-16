@@ -27,7 +27,7 @@ public class AlumnoDao {
     
     
     public boolean agregarAlumno(Alumno alum){
-        String sql = "INSERT INTO alumno_tbl (matricula, nombreAlumno, apePaternoAlumno, apeMaternoAlumno,generacion, semestre, estatusConstancia, observaciones) VALUES (?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO alumno_tbl (matricula, nombreAlumno, apePaternoAlumno, apeMaternoAlumno,generacion, semestre, estatusConstancia, observaciones, rvoe) VALUES (?,?,?,?,?,?,?,?,?)";
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
@@ -39,8 +39,7 @@ public class AlumnoDao {
             ps.setInt(6, alum.getSemestre());      
             ps.setInt(7, alum.getStatusConstancia());
             ps.setString(8, alum.getObservaciones());
-            ps.setString(9, alum.getCveGrupo());
-            ps.setString(10, alum.getRvoeLicenciatura());
+            ps.setString(9, alum.getRvoeLicenciatura());
             
            
             ps.execute();
@@ -82,8 +81,6 @@ public class AlumnoDao {
                 alum.setSemestre(rs.getInt("semestre"));
                 alum.setStatusConstancia(rs.getInt("estatusConstancia"));
                 alum.setObservaciones(rs.getString("observaciones"));
-                alum.setCveGrupo(rs.getString("cveGrupo"));
-                alum.setNombreGrupo(rs.getString("nombreGrupo"));
                 alum.setRvoeLicenciatura(rs.getString("rvoe"));
                 alum.setNombreLicenciatura(rs.getString("nombreLicenciatura"));
                 alum.setAbreviacion(rs.getString("licenciatura"));
@@ -95,30 +92,25 @@ public class AlumnoDao {
         JOptionPane.showMessageDialog(null, "Error al listar alumnos: " + e.getMessage());
     }
     return listaAlum;
-}
-
+}  
     
-    
-    
-    
-    
-    public boolean modificarAlumno(Alumno alum) {
-    String sql = "UPDATE alumno_tbl SET nombreAlumno=?, apePaternoAlumno=?, apeMaternoAlumno=?, generacion=?, semestre=?, estatusConstancia=?, observaciones=?, cveGrupo=?,rvoe=? WHERE matricula=?";
+    public boolean modificarAlumno(Alumno alum) { 
+      String sql = "UPDATE alumno_tbl SET nombreAlumno=?, apePaternoAlumno=?, apeMaternoAlumno=?, generacion=?, semestre=?, estatusConstancia=?, observaciones=?, rvoe=? WHERE matricula=?";
 
     try {
+        Connection con = cn.getConnection();
         ps = con.prepareStatement(sql);
-        ps.setString(1, alum.getNombreAlumno()); 
-        ps.setString(2, alum.getApellidoPaterno());    
+        ps.setString(1, alum.getNombreAlumno()); // Asignar el nombre del alumno
+        ps.setString(2, alum.getApellidoPaterno());
         ps.setString(3, alum.getApellidoMaterno());
-        ps.setString(4, alum.getGeneracion()); 
+        ps.setString(4, alum.getGeneracion());
         ps.setInt(5, alum.getSemestre());
         ps.setInt(6, alum.getStatusConstancia());
-        ps.setString(7, alum.getObservaciones()); 
-        ps.setString(8, alum.getCveGrupo()); 
-        ps.setString(9, alum.getRvoeLicenciatura());
-      
-        // Asignar el id para la cláusula WHERE
-        ps.setString(10, alum.getMatricula());
+        ps.setString(7, alum.getObservaciones());
+        ps.setString(8, alum.getRvoeLicenciatura());
+
+        // Asignar la matricula para la cláusula WHERE
+        ps.setString(9, alum.getMatricula());
 
         ps.execute();
         JOptionPane.showMessageDialog(null, "MODIFICADO CON EXITO ");
@@ -128,19 +120,23 @@ public class AlumnoDao {
         return false;
     } finally {
         try {
-            if (con != null) {
+             if (con != null) {
             con.close(); // Cierra la conexión
         }
         } catch (SQLException e) {
             System.out.println(e.toString());
         }
     }
+        
+        
 }
+
     
     public boolean eliminarAlumno(String id) {
         String sql = "DELETE FROM alumno_tbl WHERE matricula=?";
 
         try {
+            Connection con = cn.getConnection();
             ps = con.prepareStatement(sql);
             ps.setString(1, id);
             ps.execute();

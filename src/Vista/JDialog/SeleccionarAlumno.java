@@ -5,6 +5,7 @@
  */
 package Vista.JDialog;
 
+import InternalFrame.InternalAgregarAlumno;
 import Modelo.Alumno;
 import Modelo.AlumnoDao;
 import java.util.List;
@@ -21,6 +22,10 @@ public class SeleccionarAlumno extends javax.swing.JDialog {
 
     Alumno vAlumno = new Alumno();
     AlumnoDao vAlumnoDao = new AlumnoDao();
+    
+    
+    InternalAgregarAlumno vInternalAgregarAlumno = new InternalAgregarAlumno();
+    
     
     
    DefaultTableModel modelo = new DefaultTableModel(); //para las tablas
@@ -88,11 +93,9 @@ public class SeleccionarAlumno extends javax.swing.JDialog {
         obj[5]= Listar.get(i).getSemestre();
         obj[6]= Listar.get(i).getStatusConstancia();
         obj[7]= Listar.get(i).getObservaciones();
-        obj[8]= Listar.get(i).getCveGrupo();
-        obj[9]= Listar.get(i).getNombreGrupo();
-        obj[10]= Listar.get(i).getRvoeLicenciatura();
-        obj[11]= Listar.get(i).getNombreLicenciatura();
-        obj[12]= Listar.get(i).getAbreviacion();
+        obj[8]= Listar.get(i).getRvoeLicenciatura();
+        obj[9]= Listar.get(i).getNombreLicenciatura();
+        obj[10]= Listar.get(i).getAbreviacion();
         
         modelo.addRow(obj);
         }
@@ -126,7 +129,7 @@ public class SeleccionarAlumno extends javax.swing.JDialog {
 
             },
             new String [] {
-                "MATRICULA", "NOMBRE", "PATERNO", "MATERNO", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11", "LICENCIATURA", "LICENCIATURA"
+                "MATRICULA", "NOMBRE", "PATERNO", "MATERNO", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "LICENCIATURA", "LICENCIATURA"
             }
         ));
         tablaAlumnos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -154,32 +157,36 @@ public class SeleccionarAlumno extends javax.swing.JDialog {
             tablaAlumnos.getColumnModel().getColumn(9).setMinWidth(0);
             tablaAlumnos.getColumnModel().getColumn(9).setPreferredWidth(0);
             tablaAlumnos.getColumnModel().getColumn(9).setMaxWidth(0);
-            tablaAlumnos.getColumnModel().getColumn(10).setMinWidth(0);
-            tablaAlumnos.getColumnModel().getColumn(10).setPreferredWidth(0);
-            tablaAlumnos.getColumnModel().getColumn(10).setMaxWidth(0);
-            tablaAlumnos.getColumnModel().getColumn(11).setMinWidth(0);
-            tablaAlumnos.getColumnModel().getColumn(11).setPreferredWidth(0);
-            tablaAlumnos.getColumnModel().getColumn(11).setMaxWidth(0);
         }
 
         jLabel1.setText("BUSQUEDA DE ALUMNOS");
 
         jLabel2.setText("NOMBRE:");
 
+        txtBuscarAlumnos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtBuscarAlumnosKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtBuscarAlumnosKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtBuscarAlumnosKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
                         .addComponent(txtBuscarAlumnos, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 662, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 662, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(20, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
@@ -266,44 +273,48 @@ if (filaSeleccionada >= 0) {
         SelectedData.setObservaciones(""); // O algún valor predeterminado
     }
 
+
     if (tablaAlumnos.getValueAt(filaSeleccionada, 8) != null) {
-        SelectedData.setCveGrupo(tablaAlumnos.getValueAt(filaSeleccionada, 8).toString());
-    } else {
-        SelectedData.setCveGrupo(""); // O algún valor predeterminado
-    }
-
-    if (tablaAlumnos.getValueAt(filaSeleccionada, 9) != null) {
-        SelectedData.setNombreGrupo(tablaAlumnos.getValueAt(filaSeleccionada, 9).toString());
-    } else {
-        SelectedData.setNombreGrupo(""); // O algún valor predeterminado
-    }
-
-    if (tablaAlumnos.getValueAt(filaSeleccionada, 10) != null) {
-        SelectedData.setRvoeLicenciatura(tablaAlumnos.getValueAt(filaSeleccionada, 10).toString());
+        SelectedData.setRvoeLicenciatura(tablaAlumnos.getValueAt(filaSeleccionada, 8).toString());
     } else {
         SelectedData.setRvoeLicenciatura(""); // O algún valor predeterminado
     }
 
-    if (tablaAlumnos.getValueAt(filaSeleccionada, 11) != null) {
-        SelectedData.setNombreLicenciatura(tablaAlumnos.getValueAt(filaSeleccionada, 11).toString());
+    if (tablaAlumnos.getValueAt(filaSeleccionada, 9) != null) {
+        SelectedData.setNombreLicenciatura(tablaAlumnos.getValueAt(filaSeleccionada, 9).toString());
     } else {
         SelectedData.setNombreLicenciatura(""); // O algún valor predeterminado
         
-    } if (tablaAlumnos.getValueAt(filaSeleccionada, 12) != null) {
-        SelectedData.setAbreviacion(tablaAlumnos.getValueAt(filaSeleccionada, 12).toString());
+    } if (tablaAlumnos.getValueAt(filaSeleccionada, 10) != null) {
+        SelectedData.setAbreviacion(tablaAlumnos.getValueAt(filaSeleccionada, 10).toString());
     } else {
         SelectedData.setAbreviacion(""); // O algún valor predeterminado
     }
 
     this.dispose(); // Cierra el diálogo después de seleccionar
+     
+    
 } else {
     JOptionPane.showMessageDialog(this, "Por favor, selecciona una fila.");
 }
 
         
-        
-        
+  
     }//GEN-LAST:event_tablaAlumnosMouseClicked
+
+    private void txtBuscarAlumnosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarAlumnosKeyPressed
+       
+    }//GEN-LAST:event_txtBuscarAlumnosKeyPressed
+
+    private void txtBuscarAlumnosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarAlumnosKeyReleased
+        String mayus = txtBuscarAlumnos.getText().toUpperCase();
+        txtBuscarAlumnos.setText(mayus);
+                
+    }//GEN-LAST:event_txtBuscarAlumnosKeyReleased
+
+    private void txtBuscarAlumnosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarAlumnosKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscarAlumnosKeyTyped
 
     /**
      * @param args the command line arguments

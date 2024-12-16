@@ -21,12 +21,13 @@ public class LicenciaturaDao {
     ResultSet rs;
     
      public boolean agregarLicenciatura(Licenciatura lic){
-        String sql = "INSERT INTO licenciatura_tbl (rvoe,nombreLicenciatura) VALUES (?,?)";
+        String sql = "INSERT INTO licenciatura_tbl (rvoe,nombreLicenciatura,abreviacion) VALUES (?,?,?)";
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
             ps.setString(1, lic.getRvoe());
             ps.setString(2, lic.getNombreLicenciatura());
+            ps.setString(3, lic.getAbreviacion());
             
             ps.execute();
             return true;
@@ -56,7 +57,8 @@ public class LicenciaturaDao {
             while (rs.next()) {
                 Licenciatura lic = new Licenciatura();
                 lic.setRvoe(rs.getString("rvoe"));
-                lic.setNombreLicenciatura(rs.getString("nombreLicenciatura"));            
+                lic.setNombreLicenciatura(rs.getString("nombreLicenciatura"));  
+                lic.setAbreviacion(rs.getString("abreviacion"));
                 ListaLic.add(lic);
             }
         } catch (SQLException e) {
@@ -67,13 +69,15 @@ public class LicenciaturaDao {
      
      public boolean modificarLicenciatura(Licenciatura lic) {
     String sql = "UPDATE licenciatura_tbl SET "
-            + "rvoe=?, "
-            + "nombreLicenciatura=?"
+            //+ "rvoe=?, "
+            + "nombreLicenciatura=?,"
+            + "abreviacion=?"
             + " WHERE rvoe=?";
     try {
         ps = con.prepareStatement(sql);
-        ps.setString(1,lic.getRvoe());
-        ps.setString(2, lic.getNombreLicenciatura());      
+      
+        ps.setString(1, lic.getNombreLicenciatura()); 
+        ps.setString(2, lic.getAbreviacion());
         ps.setString(3,lic.getRvoe()); // Este setString() está de más NO borrar
         ps.execute();
            JOptionPane.showMessageDialog(null, "MODIFICADO CON EXITO ");
@@ -131,7 +135,7 @@ public class LicenciaturaDao {
                 String nombreLic = rs.getString("nombreLicenciatura");
                 String rvoe = rs.getString("rvoe");
                 // Crear objeto Ciudad y agregarlo a la lista
-                Licenciatura lic = new Licenciatura(rvoe, nombreLic);
+                Licenciatura lic = new Licenciatura(rvoe, nombreLic,"");
                 licenciaturas.add(lic);
             }
         } catch (SQLException e) {

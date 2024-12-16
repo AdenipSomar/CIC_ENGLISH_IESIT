@@ -60,13 +60,13 @@ apePaternoAlumno varchar(40) not null,
 apeMaternoAlumno varchar(40) default null,
 generacion varchar(20) default null,
 semestre int(2) default null,
-estatusConstancia int default null,
+estatusConstancia int default 0,
 observaciones varchar(100) default null,
 
-cveGrupo varchar(8) not null,
+-- cveGrupo varchar(8) not null,
 rvoe char(13) not null,
 
-foreign key (cveGrupo) references grupo_tbl(cveGrupo) on update cascade on delete restrict,
+-- foreign key (cveGrupo) references grupo_tbl(cveGrupo) on update cascade on delete restrict,
 foreign key (rvoe) references licenciatura_tbl(rvoe) on update cascade on delete restrict
 );
 

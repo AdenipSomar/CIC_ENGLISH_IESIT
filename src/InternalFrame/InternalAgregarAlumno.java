@@ -7,16 +7,18 @@ package InternalFrame;
 
 import Modelo.Alumno;
 import Modelo.AlumnoDao;
+import Modelo.AlumnoGrupo;
+import Modelo.AlumnoGrupoDao;
 import Modelo.Eventos;
 import Modelo.Grupo;
 import Modelo.GrupoDao;
 import Modelo.Licenciatura;
 import Modelo.LicenciaturaDao;
 import Vista.Interaccion.AgregarLicenciatura;
+import Vista.Interaccion.AsignarAlumnoGrupo;
 import Vista.Interaccion.AsignarCalificacionAlumno;
 import Vista.Interaccion.AsignarGrupoAlumno;
 import Vista.JDialog.SeleccionarAlumno;
-
 import Vista.VistaPrincipal;
 import java.awt.Container;
 import java.awt.Frame;
@@ -24,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
@@ -48,13 +51,21 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
     Alumno vAlumno = new Alumno();
     AlumnoDao vAlumnoDao = new AlumnoDao();
     
+    AlumnoGrupo vAlumnoGrupo = new AlumnoGrupo();
+    AlumnoGrupoDao vAlumnoGrupoDao = new AlumnoGrupoDao();
+    
+   
    
     
     DefaultTableModel modelo = new DefaultTableModel(); //para las tablas
     DefaultTableModel tmp = new DefaultTableModel(); //para reportes
 
     private VistaPrincipal vistaprincipal;
-    Eventos evt = new Eventos();
+    Eventos event = new Eventos();
+    
+    
+    
+   
     
     
     public InternalAgregarAlumno(VistaPrincipal vistaprincipal) {
@@ -71,12 +82,11 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
         cargaComboCompletoLicenciatura();
         AutoCompleteDecorator.decorate(cbxLicenciatura);
         
-        cargaComboCompletoGrupo();
-        AutoCompleteDecorator.decorate(cbxAsignarGrupoAlumno);
+        //cargaComboCompletoGrupo();
+       // AutoCompleteDecorator.decorate(cbxAsignarGrupoAlumno);
         
-        
-       
-        
+      
+     
         
     }
 
@@ -114,36 +124,8 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
     //Termina la parte de la carga de combo de licenciatura 
     //+++++++
     
-    /// INICIA LA PARTE DE CARGAR LOS GRUPOS PARA LOS ALUMNOS
     
-    public void cargaComboCompletoGrupo() {
-        cbxAsignarGrupoAlumno.removeAllItems();
-        // Cargar datos  en el combo box
-        cargarGruppo();
-        mostrarCveGrupo();
-        // Añadir listener para el cambio de selección en el combo box
-        cbxAsignarGrupoAlumno.addActionListener(e -> mostrarCveGrupo());
-    }
-    // Método para cargar los nombres de las licenciaturas en el combo box
-    public void cargarGruppo() {
-        List<Grupo> listar = vGrupoDao.obtenerGrupo();
-        for (Grupo vGrupo : listar) {
-            cbxAsignarGrupoAlumno.addItem(vGrupo.getNombreGrupo());
-        }
-    }
-    // Método para mostrar el código postal correspondiente cuando se selecciona una licenciatura
-    public void mostrarCveGrupo() {
-        String nombreSeleccionada = (String) cbxAsignarGrupoAlumno.getSelectedItem();
-        List<Grupo> listar = vGrupoDao.obtenerGrupo();
-        for (Grupo vGrupo : listar) {
-            if (vGrupo.getNombreGrupo().equals(nombreSeleccionada)) {
-                txtCveGrupoAlumno.setText(vGrupo.getCveGrupo());
-                break;
-            }
-        }
-    }
-    //Termina la parte de la carga de combo de Grupo 
-    //+++++++
+   
     
     //limpiar table
     public void limpiarTable(){ 
@@ -224,9 +206,7 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
         jLabel9 = new javax.swing.JLabel();
         txtObservaciones = new javax.swing.JTextField();
         btnCalificaciones = new javax.swing.JButton();
-        jLabel3 = new javax.swing.JLabel();
-        cbxAsignarGrupoAlumno = new javax.swing.JComboBox<>();
-        txtCveGrupoAlumno = new javax.swing.JTextField();
+        btnAgregarAlumnoGrupo = new javax.swing.JButton();
         btnActualizarMetodos = new javax.swing.JButton();
 
         jLabel1.setText("APARTADO DE ALUMNOS");
@@ -253,9 +233,63 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
 
         LBLSEMESTRE.setText("SEMESTRE:");
 
+        txtMatricula.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtMatriculaKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtMatriculaKeyTyped(evt);
+            }
+        });
+
+        txtPaternoAlumno.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPaternoAlumnoKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPaternoAlumnoKeyTyped(evt);
+            }
+        });
+
+        txtMaternoAlumno.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtMaternoAlumnoKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtMaternoAlumnoKeyTyped(evt);
+            }
+        });
+
+        txtGeneracion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtGeneracionKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtGeneracionKeyTyped(evt);
+            }
+        });
+
+        txtSemestre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtSemestreKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtSemestreKeyTyped(evt);
+            }
+        });
+
         cbxLicenciatura.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel2.setText("NOMBRE: ");
+
+        txtNombreAlumno.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtNombreAlumnoKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNombreAlumnoKeyTyped(evt);
+            }
+        });
 
         btnAgregarLicenciatura.setText("+");
         btnAgregarLicenciatura.addActionListener(new java.awt.event.ActionListener() {
@@ -668,6 +702,15 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
 
         jLabel9.setText("OBSERVACIONES:");
 
+        txtObservaciones.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtObservacionesKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtObservacionesKeyTyped(evt);
+            }
+        });
+
         btnCalificaciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/x20Notas.png"))); // NOI18N
         btnCalificaciones.setText("Calificaciones");
         btnCalificaciones.addActionListener(new java.awt.event.ActionListener() {
@@ -676,9 +719,13 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel3.setText("ASIGNAR GRUPO:");
-
-        cbxAsignarGrupoAlumno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        btnAgregarAlumnoGrupo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/x20clase.png"))); // NOI18N
+        btnAgregarAlumnoGrupo.setText("Agregar a Grupo");
+        btnAgregarAlumnoGrupo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarAlumnoGrupoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -687,23 +734,20 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(btnCalificaciones)
+                        .addGap(47, 47, 47)
+                        .addComponent(btnAgregarAlumnoGrupo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLabel4)
                         .addGap(47, 47, 47)
                         .addComponent(cbEstadoConstanciaAlumno))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(140, 140, 140)
-                        .addComponent(btnCalificaciones))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel3))
+                        .addComponent(jLabel9)
                         .addGap(39, 39, 39)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtObservaciones, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
-                            .addComponent(cbxAsignarGrupoAlumno, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtCveGrupoAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(txtObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(49, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -717,14 +761,10 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtObservaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel9))
-                .addGap(27, 27, 27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 258, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(cbxAsignarGrupoAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(txtCveGrupoAlumno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
-                .addComponent(btnCalificaciones)
+                    .addComponent(btnCalificaciones)
+                    .addComponent(btnAgregarAlumnoGrupo))
                 .addContainerGap())
         );
 
@@ -776,7 +816,7 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jInternalFrame1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(panelAlumnosInfo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -803,8 +843,29 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
       
         if (!"".equals(txtMatricula.getText()) &&
         !"".equals(txtNombreAlumno.getText()) &&
-        !"".equals(txtPaternoAlumno.getText())) {
+        !"".equals(txtPaternoAlumno.getText()) &&
+        !"".equals(txtGeneracion.getText())
+                ) {
 
+        vAlumno.setMatricula(txtMatricula.getText());
+        vAlumno.setNombreAlumno(txtNombreAlumno.getText());
+        vAlumno.setApellidoPaterno(txtPaternoAlumno.getText());
+        vAlumno.setApellidoMaterno(txtMaternoAlumno.getText());
+        vAlumno.setGeneracion(txtGeneracion.getText());
+        vAlumno.setSemestre(Integer.parseInt(txtSemestre.getText()));
+        vAlumno.setStatusConstancia(cbEstadoConstanciaAlumno.isSelected() ? 1 : 0); // para enviar 1 o 0 para la base de datos
+        vAlumno.setObservaciones(txtObservaciones.getText());
+        vAlumno.setRvoeLicenciatura(txtRvoeLicenciaturaAlumno.getText());
+        
+        
+        // Insertar el docente en la base de datos
+        vAlumnoDao.agregarAlumno(vAlumno);
+              
+        // Limpiar y actualizar tabla
+        limpiarTable();    
+        limpiarAlumno();
+        
+        // Mostrar mensaje de éxito
         JOptionPane.showMessageDialog(null, "Nuevo Ingreso Registrado con éxito!!");
 
         } else {
@@ -812,18 +873,67 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
      }
         
         
+        
     }//GEN-LAST:event_btnAgregarAlumnoActionPerformed
 
     private void btnModificarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarAlumnoActionPerformed
-        // TODO add your handling code here:
+            
+         if("".equals(txtMatricula.getText())){
+            JOptionPane.showMessageDialog(null, "Seleccione una fila");
+        }else{  
+        if(!"".equals(txtMatricula.getText()) && !"".equals(txtNombreAlumno.getText())&& !"".equals(txtPaternoAlumno.getText())){
+         
+          
+         vAlumno.setMatricula(txtMatricula.getText());
+         vAlumno.setNombreAlumno(txtNombreAlumno.getText());
+         vAlumno.setApellidoPaterno(txtPaternoAlumno.getText());
+         vAlumno.setApellidoMaterno(txtMaternoAlumno.getText());
+         vAlumno.setGeneracion(txtGeneracion.getText());
+         vAlumno.setSemestre(Integer.parseInt(txtSemestre.getText()));
+         vAlumno.setStatusConstancia(cbEstadoConstanciaAlumno.isSelected() ? 1 : 0);
+         vAlumno.setObservaciones(txtObservaciones.getText());
+         vAlumno.setRvoeLicenciatura(txtRvoeLicenciaturaAlumno.getText());
+
+         vAlumnoDao.modificarAlumno(vAlumno);
+         limpiarAlumno();
+         
+        }else{
+        JOptionPane.showMessageDialog(null,"HAY CAMPOS VACIOS");
+        }
+      }
+            
+        
     }//GEN-LAST:event_btnModificarAlumnoActionPerformed
 
     private void btnCancelarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarAlumnoActionPerformed
-        // TODO add your handling code here:
+        limpiarAlumno();
+        
+        
     }//GEN-LAST:event_btnCancelarAlumnoActionPerformed
 
     private void btnEliminarAlumnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarAlumnoActionPerformed
-        // TODO add your handling code here:
+       
+          if (!"".equals(txtMatricula.getText())) {
+        int pregunta = JOptionPane.showConfirmDialog(null, "¿Estás seguro de eliminar?");
+        
+        if (pregunta == 0) {
+            String id = txtMatricula.getText();
+            boolean eliminado = vAlumnoDao.eliminarAlumno(id);
+
+            if (eliminado) {
+                JOptionPane.showMessageDialog(null, "Eliminado correctamente!!");
+                  limpiarAlumno();
+
+                
+            } else {
+                // No es necesario un mensaje adicional aquí porque el DAO ya muestra el mensaje de error
+            }
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "Seleccione un registro para eliminar.");
+    }
+        
+        
     }//GEN-LAST:event_btnEliminarAlumnoActionPerformed
 
     private void btnCalificacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalificacionesActionPerformed
@@ -874,6 +984,7 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
     SeleccionarAlumno dialogSeleccionar = new SeleccionarAlumno(
         (Frame) SwingUtilities.getWindowAncestor(this), true
     );
+    modificarAlumno(); // prueba
     dialogSeleccionar.setVisible(true);
 
     // Obtén el objeto seleccionado del diálogo
@@ -894,15 +1005,110 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
         cbEstadoConstanciaAlumno.setSelected(selectedData.getStatusConstancia() == 1);
         txtObservaciones.setText(selectedData.getObservaciones());
         cbxLicenciatura.setSelectedItem(selectedData.getNombreLicenciatura());
-        cbxAsignarGrupoAlumno.setSelectedItem(selectedData.getNombreGrupo());
+        
     }
+    
 
     }//GEN-LAST:event_btnAbrirVentanaActionPerformed
 
     private void btnActualizarMetodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarMetodosActionPerformed
-       cargaComboCompletoGrupo();
+      
        cargaComboCompletoLicenciatura();
     }//GEN-LAST:event_btnActualizarMetodosActionPerformed
+
+    private void txtMatriculaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMatriculaKeyReleased
+     String mayus = txtMatricula.getText().toUpperCase();
+     txtMatricula.setText(mayus);
+        
+    }//GEN-LAST:event_txtMatriculaKeyReleased
+
+    private void txtMatriculaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMatriculaKeyTyped
+       if (txtMatricula.getText().length() >= 8) {
+            evt.consume();
+        }
+        
+    }//GEN-LAST:event_txtMatriculaKeyTyped
+
+    private void txtNombreAlumnoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreAlumnoKeyReleased
+        String mayus = txtNombreAlumno.getText().toUpperCase();
+        txtNombreAlumno.setText(mayus);
+    }//GEN-LAST:event_txtNombreAlumnoKeyReleased
+
+    private void txtNombreAlumnoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNombreAlumnoKeyTyped
+        if (txtNombreAlumno.getText().length() >= 40) {
+            evt.consume();
+        }
+        event.textKeyPress(evt);
+    }//GEN-LAST:event_txtNombreAlumnoKeyTyped
+
+    private void txtPaternoAlumnoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPaternoAlumnoKeyReleased
+        String mayus = txtPaternoAlumno.getText().toUpperCase();
+        txtPaternoAlumno.setText(mayus);
+    }//GEN-LAST:event_txtPaternoAlumnoKeyReleased
+
+    private void txtPaternoAlumnoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPaternoAlumnoKeyTyped
+         if (txtPaternoAlumno.getText().length() >= 40) {
+            evt.consume();
+        }
+       event.textKeyPress(evt);
+    }//GEN-LAST:event_txtPaternoAlumnoKeyTyped
+
+    private void txtMaternoAlumnoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMaternoAlumnoKeyReleased
+       String mayus =  txtMaternoAlumno.getText().toUpperCase();
+       txtMaternoAlumno.setText(mayus);
+       
+    }//GEN-LAST:event_txtMaternoAlumnoKeyReleased
+
+    private void txtMaternoAlumnoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMaternoAlumnoKeyTyped
+         if (txtMaternoAlumno.getText().length() >= 40) {
+            evt.consume();
+        }
+        event.textKeyPress(evt);
+    }//GEN-LAST:event_txtMaternoAlumnoKeyTyped
+
+    private void txtGeneracionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtGeneracionKeyTyped
+         if (txtGeneracion.getText().length() >= 9) {
+            evt.consume();
+        }
+        event.numberKeyPress(evt);
+    }//GEN-LAST:event_txtGeneracionKeyTyped
+
+    private void txtGeneracionKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtGeneracionKeyReleased
+       String mayus = txtGeneracion.getText().toUpperCase();
+       txtGeneracion.setText(mayus);
+    }//GEN-LAST:event_txtGeneracionKeyReleased
+
+    private void txtSemestreKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSemestreKeyReleased
+       String mayus =txtSemestre.getText().toUpperCase();
+       txtSemestre.setText(mayus);
+    }//GEN-LAST:event_txtSemestreKeyReleased
+
+    private void txtSemestreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSemestreKeyTyped
+         if (txtSemestre.getText().length() >= 1) {
+            evt.consume();         
+        }
+         event.numberKeyPress(evt);
+    }//GEN-LAST:event_txtSemestreKeyTyped
+
+    private void txtObservacionesKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtObservacionesKeyReleased
+       String mayus = txtObservaciones.getText().toUpperCase();
+       txtObservaciones.setText(mayus);
+    }//GEN-LAST:event_txtObservacionesKeyReleased
+
+    private void txtObservacionesKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtObservacionesKeyTyped
+         if (txtObservaciones.getText().length() >= 100) {
+            evt.consume();
+        }
+           
+    }//GEN-LAST:event_txtObservacionesKeyTyped
+
+    private void btnAgregarAlumnoGrupoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarAlumnoGrupoActionPerformed
+      
+        AsignarAlumnoGrupo vAsignarAlumnoGrupo = new AsignarAlumnoGrupo();
+        vAsignarAlumnoGrupo.setVisible(true);
+        
+        
+    }//GEN-LAST:event_btnAgregarAlumnoGrupoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -923,6 +1129,7 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnActualizarMetodos;
     private javax.swing.JButton btnAgregarAlumno;
     private javax.swing.JButton btnAgregarAlumno1;
+    private javax.swing.JButton btnAgregarAlumnoGrupo;
     private javax.swing.JButton btnAgregarLicenciatura;
     private javax.swing.JButton btnAsignarGrupo1;
     private javax.swing.JButton btnBuscar1;
@@ -937,14 +1144,12 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnModificarAlumno;
     private javax.swing.JButton btnModificarAlumno1;
     private javax.swing.JCheckBox cbEstadoConstanciaAlumno;
-    private javax.swing.JComboBox<String> cbxAsignarGrupoAlumno;
     private javax.swing.JComboBox<String> cbxLicenciatura;
     private javax.swing.JComboBox<String> cbxLicenciatura1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -960,7 +1165,6 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
     private javax.swing.JPanel panelBusqueda1;
     private javax.swing.JTable tableAlumnos1;
     private javax.swing.JTextField txtBusquedaNombre1;
-    private javax.swing.JTextField txtCveGrupoAlumno;
     private javax.swing.JTextField txtGeneracion;
     private javax.swing.JTextField txtGeneracion1;
     private javax.swing.JTextField txtMaternoAlumno;
@@ -987,6 +1191,7 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
         cbEstadoConstanciaAlumno.setSelected(false);
         txtObservaciones.setText("");
         cbxLicenciatura.setSelectedIndex(0);
+        
               
         agregarAlumno();
                
@@ -1001,12 +1206,15 @@ public class InternalAgregarAlumno extends javax.swing.JInternalFrame {
       btnEliminarAlumno.setEnabled(false);
     }
     
-    public void alumnoMouseClicked(){
-    btnAgregarAlumno.setEnabled(false);
-    btnModificarAlumno.setEnabled(true);
-    btnCancelarAlumno.setEnabled(true);
-    btnEliminarAlumno.setEnabled(true);
+    public void modificarAlumno(){
+      btnAgregarAlumno.setEnabled(false);
+      btnModificarAlumno.setEnabled(true);
+      btnCancelarAlumno.setEnabled(true);
+      btnEliminarAlumno.setEnabled(true);
     }
+    
+  
+   
     
     
     

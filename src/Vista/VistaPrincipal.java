@@ -10,6 +10,7 @@ import InternalFrame.InternalAgregarAlumno;
 import InternalFrame.InternalBajaAlumno;
 import InternalFrame.InternalDocente;
 import InternalFrame.InternalGrupoAlumno;
+import InternalFrame.InternalUsuario;
 import Modelo.Eventos;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -40,7 +41,11 @@ public class VistaPrincipal extends javax.swing.JFrame {
     InternalAgregarAlumno vInternalAgregarAlumno = new InternalAgregarAlumno(this);
     InternalBajaAlumno vInternalBajaAlumno = new InternalBajaAlumno(this);
     InternalGrupoAlumno vInternalGrupoAlumno = new InternalGrupoAlumno(this);
-    
+    InternalUsuario vInternalUsuario = new InternalUsuario(this);
+
+            
+            
+            
     
    Eventos evt = new Eventos();
    
@@ -93,6 +98,8 @@ public class VistaPrincipal extends javax.swing.JFrame {
         itemDocente = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
+        jMenu1 = new javax.swing.JMenu();
+        itemAgregarUsuario = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("CIC_ENGLISH_IESIT");
@@ -225,6 +232,19 @@ public class VistaPrincipal extends javax.swing.JFrame {
         jMenu6.setText("   HORARIOS");
         mnuPrincipal.add(jMenu6);
 
+        jMenu1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/x30Usuario.png"))); // NOI18N
+        jMenu1.setText("    USUARIO");
+
+        itemAgregarUsuario.setText("AGREGAR USUARIOS");
+        itemAgregarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemAgregarUsuarioActionPerformed(evt);
+            }
+        });
+        jMenu1.add(itemAgregarUsuario);
+
+        mnuPrincipal.add(jMenu1);
+
         setJMenuBar(mnuPrincipal);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -333,6 +353,18 @@ public class VistaPrincipal extends javax.swing.JFrame {
                     panelPrincipal.removeTabAt(indiceACerrar);
                     // Eliminar la entrada del mapa
                     indicePestanas.remove(vInternalGrupoAlumno);
+                }
+    
+    }
+    
+     public void cerrarUsuario(){
+    // Obtener el índice actual de la pestaña a cerrar
+                int indiceACerrar = panelPrincipal.indexOfComponent(vInternalUsuario);
+                if (indiceACerrar != -1) {
+                    // Remover la pestaña del panel
+                    panelPrincipal.removeTabAt(indiceACerrar);
+                    // Eliminar la entrada del mapa
+                    indicePestanas.remove(vInternalUsuario);
                 }
     
     }
@@ -590,6 +622,71 @@ public class VistaPrincipal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_itemAgregarGrupoAlumnoActionPerformed
 
+    private void itemAgregarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemAgregarUsuarioActionPerformed
+       
+        
+        // Añadir el componente al panel
+    panelPrincipal.add(vInternalUsuario);
+
+    // Obtener el índice de la nueva pestaña
+    int indice = panelPrincipal.indexOfComponent(vInternalUsuario);
+
+    if (indice != -1) {
+        // Crear un panel para la pestaña con título y etiqueta de cerrar
+        JPanel tabPanel = new JPanel(new BorderLayout());
+        tabPanel.setOpaque(false); // Hacer que el panel sea transparente
+        
+        JLabel iconLabel = new JLabel();
+        
+        JLabel tabTitle = new JLabel(" USUARIO " + (indice + 1) + "  "); // Cambia "Titulo " por el título deseado
+        tabTitle.setOpaque(false); // Hacer que el título sea transparente
+
+        JLabel cerrar = new JLabel("    X     ");
+        cerrar.setForeground(Color.DARK_GRAY); // Color de texto rojo para la "X"
+        cerrar.setOpaque(false); // Permitir que el fondo sea visible
+        
+        tabPanel.add(iconLabel, BorderLayout.WEST); // Icono a la izquierda
+        tabPanel.add(tabTitle, BorderLayout.CENTER);
+        tabPanel.add(cerrar, BorderLayout.EAST);
+
+        // Establecer el panel de la pestaña como el componente de la pestaña
+        panelPrincipal.setTabComponentAt(indice, tabPanel);
+
+        // Agregar el MouseListener a la etiqueta de cerrar
+        cerrar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+               cerrarUsuario();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                cerrar.setOpaque(true);
+                cerrar.setBackground(Color.RED); // Fondo rojo para la "X"
+                cerrar.setForeground(Color.WHITE); // Cambiar color de texto a negro al pasar el mouse            
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+             cerrar.setOpaque(false);
+                cerrar.setForeground(Color.DARK_GRAY); // Restaurar color de texto a rojo al salir del mouse
+            }
+        });
+        // Guardar el componente y su índice en el mapa
+        indicePestanas.put(vInternalUsuario, indice);
+    }
+
+    // Hacer visible el componente
+    vInternalUsuario.setVisible(true);
+    
+    // Establecer la pestaña recién creada como la pestaña seleccionada
+    panelPrincipal.setSelectedComponent(vInternalUsuario);
+    
+   
+      
+        
+        
+    }//GEN-LAST:event_itemAgregarUsuarioActionPerformed
+
    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -627,11 +724,13 @@ public class VistaPrincipal extends javax.swing.JFrame {
     private java.awt.Panel VistaPrincipal;
     private javax.swing.JMenuItem itemAgregarAlumno;
     private javax.swing.JMenuItem itemAgregarGrupoAlumno;
+    private javax.swing.JMenuItem itemAgregarUsuario;
     private javax.swing.JMenuItem itemBajaAlumno;
     private javax.swing.JMenuItem itemDocente;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
